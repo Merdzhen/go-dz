@@ -7,23 +7,22 @@ import (
 	"strings"
 )
 
+var rates = map[string]float64{
+	"USD": 1.0,
+	"EUR": 0.86,
+	"RUB": 81.27,
+}
+
 func main() {
 	sum, originalCurrency, exchangeCurrency := scanData()
-	convertedSum := convert(sum, originalCurrency, exchangeCurrency)
+	convertedSum := convert(sum, originalCurrency, exchangeCurrency, rates)
 	convertedSum = math.Round(convertedSum * 100) / 100
 	fmt.Printf("%.2f %s\n", convertedSum, strings.ToUpper(exchangeCurrency))
 }
 
-func convert(sum float64, originalCurrency string, exchangeCurrency string) float64 {
+func convert(sum float64, originalCurrency string, exchangeCurrency string, rates map[string]float64) float64 {
 	originalCurrency = strings.ToUpper(originalCurrency)
 	exchangeCurrency = strings.ToUpper(exchangeCurrency)
-	
-	// Курсы относительно USD
-	rates := map[string]float64{
-		"USD": 1.0,
-		"EUR": 0.86,
-		"RUB": 81.27,
-	}
 	
 	fromRate, ok1 := rates[originalCurrency]
 	toRate, ok2 := rates[exchangeCurrency]
