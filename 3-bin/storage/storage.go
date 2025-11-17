@@ -14,7 +14,7 @@ type Storage interface {
 
 type FileStorage struct{}
 
-func NewFileStorage() *FileStorage {
+func NewFileStorage() Storage {
 	return &FileStorage{}
 }
 

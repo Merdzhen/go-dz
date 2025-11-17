@@ -3,6 +3,7 @@ package main
 import (
 	"bin/bins"
 	"bin/storage"
+	"fmt"
 )
 
 func main() {
@@ -11,5 +12,8 @@ func main() {
     bin := bins.NewBin("123", false, "test")
 		binList := bins.NewBinList([]bins.Bin{*bin})
 		
-    myStorage.SaveBins(binList.Bins, "data.json")
+    err := myStorage.SaveBins(binList.Bins, "bins.json")
+		if err != nil {
+			fmt.Println("Error:", err)
+    }
 }
