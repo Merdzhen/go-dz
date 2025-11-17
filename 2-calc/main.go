@@ -15,31 +15,43 @@ func main() {
 	fmt.Printf("%s: %.2f\n", command, result)
 }
 
-func calculate(command string, numbers []int) float64 {
-	sort.Ints(numbers)
-	n := len(numbers)
-	var sum int 
-	for _, num := range numbers {
-		sum += num
-	}
-
-	avg := float64(sum) / float64(n)
-
-	var med float64
-	if n%2 == 1 {
-		med = float64(numbers[n/2])
-	} else {
-		med = float64(numbers[n/2-1] + numbers[n/2]) / 2
+func calculate(command string, nums []int) float64 {
+	commands := map[string]func([]int) float64{
+		"SUM": func(numbers []int) float64{
+			var sum int 
+			for _, num := range numbers {
+				sum += num
+			}
+			return float64(sum)
+		},
+		"AVG": func(numbers []int) float64{
+			var sum int 
+			n := len(numbers)
+			for _, num := range numbers {
+				sum += num
+			}
+			return float64(sum) / float64(n)
+		},
+		"MED": func(numbers []int) float64{
+			sort.Ints(numbers)
+			n := len(numbers)
+			var med float64
+			if n%2 == 1 {
+				med = float64(numbers[n/2])
+			} else {
+				med = float64(numbers[n/2-1] + numbers[n/2]) / 2
+			}
+			return med
+		},
 	}
 	
-	switch command {
-	case "AVG":
-		return avg
-	case "SUM":
-		return float64(sum)
-	default:
-		return med
+	commandFunc, ok := commands[command]
+	if !ok {
+		return 0.0
 	}
+
+	result := commandFunc(nums)
+	return result
 }
 
 func scanData() (string, []int) {
