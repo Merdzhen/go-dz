@@ -7,7 +7,18 @@ import (
 	"os"
 )
 
-func SaveBinsToFile(bins []bins.Bin, fileName string) error {
+type Storage interface {
+	SaveBins(bins []bins.Bin, fileName string) error
+	ReadBins(fileName string) ([]bins.Bin, error)
+}
+
+type FileStorage struct{}
+
+func NewFileStorage() Storage {
+	return &FileStorage{}
+}
+
+func (fs *FileStorage) SaveBins(bins []bins.Bin, fileName string) error {
 	data, err := json.Marshal(bins)
 	if err != nil {
 		return err
@@ -26,7 +37,7 @@ func SaveBinsToFile(bins []bins.Bin, fileName string) error {
 	return nil
 }
 
-func ReadBinsFromFile(fileName string) ([]bins.Bin, error) {
+func (fs *FileStorage) ReadBins(fileName string) ([]bins.Bin, error) {
 	data, err := os.ReadFile(fileName)
 	if err != nil {
 		fmt.Println(err)

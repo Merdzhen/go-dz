@@ -1,6 +1,8 @@
 package bins
 
-import "time"
+import (
+	"time"
+)
 
 type Bin struct {
 	Id        string
